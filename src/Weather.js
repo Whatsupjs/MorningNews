@@ -1,28 +1,75 @@
 import react from 'react';
 
+const api = process.env.REACT_APP_API_KEY;
+const baseurl = "https://api.openweathermap.org/data/2.5/";
+
 class Weather extends react.Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
-        this.state= {
-            location: {
-                city: '',
-                country: ''
-            },
+        this.state = {
             weather: {
                 temp: {
                     current: '',
-                    min: '',
-                    max: '',
+                    feels: ''
                 },
-                weather: ''
-            }
-        } 
+                desc: '',
+                location: {
+                    city: '',
+                    country: ''
+                }
+            },
+            query: ''
+        }
+        this.handleChange = this.handleChange.bind(this);
     }
 
     componentDidMount() {
-        
+        // fetch weather data from api here
+        fetch(`${baseurl}weather?q=mississauga&units=metric&appid=${api}`)
+            .then(res => res.json())
+            .then(data => this.setState({
+                weather: {
+                    temp: {
+                        current: data.main.temp,
+                        feels: data.main.feels_like
+                    },
+                    desc: data.weather[0].description,
+                    location: {
+                        city: data.name,
+                        country: data.sys.country
+                    }
+                }
+            }))
+            .catch((err) => {
+                console.log(err);
+            });
         console.log("weather is mounted");
+    }
+
+    handleChange(e) {
+        if( e.key === "Enter"){
+            let query = e.target.value; 
+            fetch(`${baseurl}weather?q=${query}&units=metric&appid=${api}`)
+            .then(res => res.json())
+            .then(data => this.setState({
+                weather: {
+                    temp: {
+                        current: data.main.temp,
+                        feels: data.main.feels_like
+                    },
+                    desc: data.weather[0].description,
+                    location: {
+                        city: data.name,
+                        country: data.sys.country
+                    }
+                }
+            }))
+            .catch((err) => {
+                console.log(err);
+            });
+            e.target.value = '';
+        }
     }
 
     render() {
@@ -30,20 +77,21 @@ class Weather extends react.Component {
             <div className="weather-container">
 
                 <div className="search-box">
-                    <input type="text" className="search-bar" placeholder="Search for a city..." />
+                    <input type="text" className="search-bar" placeholder="Search for a city..."
+                      onKeyPress={this.handleChange} value={this.handleChange.value} />
                 </div>
 
                 <div className="location-box">
-                    <div className="location"> Mississauga, Canada</div>
+                    <div className="location"> {this.state.weather.location.city}, {this.state.weather.location.country}</div>
                 </div>
 
                 <div className="weather-box">
-                    <div className="temp">14 °C</div>
-                    <div className="weather">cloudy</div>
-                    <div className="temp-minmax"> 15/16 °C</div>
+                    <div className="temp">{Math.round(this.state.weather.temp.current)} °C</div>
+                    <div className="weather">{this.state.weather.desc}</div>
+                    <div className="feels"> Feels like: {Math.round(this.state.weather.temp.feels)} °C</div>
                 </div>
             </div>
-        );
+        )
     }
 }
 
