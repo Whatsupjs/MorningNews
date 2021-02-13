@@ -2,6 +2,7 @@ import react from 'react';
 
 const api = process.env.REACT_APP_API_KEY;
 const baseurl = "https://api.openweathermap.org/data/2.5/";
+const iconurl = "http://openweathermap.org/img/wn/"
 
 class Weather extends react.Component {
 
@@ -14,6 +15,7 @@ class Weather extends react.Component {
                     feels: ''
                 },
                 desc: '',
+                icon: '',
                 location: {
                     city: '',
                     country: ''
@@ -35,6 +37,7 @@ class Weather extends react.Component {
                         feels: data.main.feels_like
                     },
                     desc: data.weather[0].description,
+                    icon: data.weather[0].icon,
                     location: {
                         city: data.name,
                         country: data.sys.country
@@ -59,6 +62,7 @@ class Weather extends react.Component {
                         feels: data.main.feels_like
                     },
                     desc: data.weather[0].description,
+                    icon: data.weather[0].icon,
                     location: {
                         city: data.name,
                         country: data.sys.country
@@ -87,9 +91,12 @@ class Weather extends react.Component {
 
                 <div className="weather-box">
                     <div className="temp">{Math.round(this.state.weather.temp.current)} °C</div>
+                    <div className="icon"><img id="wicon" src={iconurl + this.state.weather.icon + "@2x.png"} alt="Weather icon" /></div>
                     <div className="weather">{this.state.weather.desc}</div>
                     <div className="feels"> Feels like: {Math.round(this.state.weather.temp.feels)} °C</div>
                 </div>
+
+                
             </div>
         )
     }
