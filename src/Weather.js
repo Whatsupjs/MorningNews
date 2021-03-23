@@ -47,7 +47,6 @@ class Weather extends react.Component {
             .catch((err) => {
                 console.log(err);
             });
-        console.log("weather is mounted");
     }
 
     handleChange(e) {

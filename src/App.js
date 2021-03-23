@@ -1,6 +1,7 @@
 import React from 'react';
 import Clock from './Clock';
 import Weather from './Weather';
+import Covid from './Covid';
 
 function App() {
   return (
@@ -10,6 +11,9 @@ function App() {
         <Clock/>
         
         <Weather/>
+
+        <Covid/>
+        
       </main>
     </div>
   );
