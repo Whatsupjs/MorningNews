@@ -44,7 +44,7 @@ main {
   background-color: rgba(50,50,50, 0.3);
 }
 
-.location-box .location {
+.location-box .location, .covid-container {
   color: #000;
   font-size: 32px;
   font-weight: 500;
